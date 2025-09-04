@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Senwelo Olebogeng | Full-Stack Developer</title>
+
+  <!-- Inline: set theme early to avoid FOUC / invisible text -->
+  <script>
+    (function(){
+      try {
+        const key = 'senwelo_theme';
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          if (saved === 'dark') document.documentElement.classList.add('theme-dark');
+          else document.documentElement.classList.remove('theme-dark');
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.classList.add('theme-dark');
+        } else {
+          document.documentElement.classList.remove('theme-dark');
+        }
+      } catch(e){}
+    })();
+  </script>
+
+  <style>
+    /* ---------- Simple light <-> dark variables ---------- */
+    :root{
+      --bg: #ffffff;
+      --surface: #f6f8fb;
+      --text: #0b1220;
+      --muted: #6b7b8c;
+      --accent: #0b84ff;
+      --card-border: rgba(11,18,30,0.04);
+      --radius: 12px;
+      --maxw: 1100px;
+    }
+    .theme-dark {
+      --bg: #0b121e;
+      --surface: rgba(255,255,255,0.02);
+      --text: #eef6ff;
+      --muted: #9fb7d4;
+      --accent: #63ace5;
+      --card-border: rgba(99,172,229,0.06);
+    }
+
+    /* ---------- Base layout ---------- */
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 18px}
+
+    /* ---------- Header ---------- */
+    header{position:sticky;top:0;background:transparent;padding:12px 0;backdrop-filter: blur(6px);z-index:20}
+    .header-inner{display:flex;align-items:center;justify-content:space-between}
+    .brand{font-weight:800;display:flex;gap:10px;align-items:center}
+    .badge{background:var(--accent);color:#fff;padding:6px 10px;border-radius:8px;font-weight:800}
+    nav ul{display:flex;gap:14px;list-style:none;padding:0;margin:0}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600;padding:8px;border-radius:8px}
+    nav a:hover, nav a.active{color:var(--accent);background:rgba(0,0,0,0.04)}
+
+    .header-actions{display:flex;gap:8px;align-items:center}
+    .theme-btn{background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer;font-size:18px;color:var(--text)}
+
+    /* ---------- Hero ---------- */
+    .hero{padding:100px 0 40px;text-align:center}
+    .profile-container{width:140px;height:140px;border-radius:999px;overflow:hidden;border:4px solid var(--accent);margin:0 auto 12px}
+    .profile-photo{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-title{font-size:1.6rem;margin:6px 0;background:linear-gradient(90deg,var(--accent),#4b86b4);-webkit-background-clip:text;color:transparent}
+    .hero-sub{color:var(--muted);margin-bottom:14px}
+
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:700;cursor:pointer}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-outline{border:1px solid var(--card-border);color:var(--text);background:transparent}
+
+    /* ---------- Sections ---------- */
+    section{margin:28px 0;padding:22px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--card-border);box-shadow:0 8px 20px rgba(0,0,0,0.04)}
+    .section-header{text-align:center;margin-bottom:12px}
+    .subtitle{color:var(--muted);font-size:0.95rem}
+
+    /* ---------- About ---------- */
+    .about-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center}
+    .tech-stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .tech{background:rgba(0,0,0,0.04);padding:6px 10px;border-radius:999px;color:var(--accent);font-weight:700}
+
+    /* ---------- Skills ---------- */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .skill-item{padding:10px;border-radius:10px;background:rgba(0,0,0,0.02);border:1px solid rgba(0,0,0,0.03)}
+    .skill-head{display:flex;justify-content:space-between;margin-bottom:8px;color:var(--muted);font-weight:700}
+    .skill-bar{height:12px;background:rgba(0,0,0,0.05);border-radius:8px;overflow:hidden}
+    .skill-progress{height:100%;width:0%;background:var(--accent);border-radius:8px;transition: width 1100ms cubic-bezier(.22,.9,.1,1)}
+    .skill-source{margin-left:8px;padding:4px 8px;border-radius:999px;background:rgba(0,0,0,0.03);color:var(--muted);font-size:0.78rem}
+
+    /* ---------- Projects ---------- */
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+    .project-card{padding:12px;border-radius:10px;background:rgba(0,0,0,0.02);border:1px solid rgba(0,0,0,0.03)}
+    .project-card h3{margin:6px 0;color:var(--accent)}
+    .project-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:0.9rem;color:var(--muted)}
+    .loading{color:var(--muted);text-align:center;padding:16px}
+
+    /* ---------- Contact & Footer ---------- */
+    .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+    .contact-item{display:flex;gap:10px;align-items:center}
+    .contact-icon{width:44px;height:44px;border-radius:999px;background:rgba(0,0,0,0.03);display:grid;place-items:center;color:var(--accent);font-weight:700}
+
+    footer{text-align:center;padding:18px 0;color:var(--muted)}
+    .footer-links { margin-bottom:8px; }
+
+    /* ---------- Reveal helper ---------- */
+    .fade-section{opacity:0;transform:translateY(12px);transition:all .55s ease}
+    .fade-section.visible{opacity:1;transform:none}
+
+    /* ---------- Responsive ---------- */
+    @media (max-width:900px){
+      .about-grid{grid-template-columns:1fr}
+      .profile-container{width:120px;height:120px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="badge">Senwelo</span><span style="opacity:.9">Dev</span>
+      </div>
+
+      <nav aria-label="main">
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-btn" id="themeToggle" aria-pressed="false" title="Toggle theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section id="hero" class="hero fade-section">
+      <div class="profile-container">
+        <img src="VideoCapture_20250127-145651.jpg" alt="Senwelo portrait" class="profile-photo" loading="lazy">
+      </div>
+      <h1 class="hero-title">Full-Stack Developer building scalable systems</h1>
+      <p class="hero-sub">Java • Spring Boot • HTML/CSS/JS • PostgreSQL • Cloud Deployment</p>
+      <div style="margin-top:12px">
+        <a class="btn btn-primary" href="#projects">View Projects</a>
+        <a class="btn btn-outline" href="#contact">Contact Me</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="fade-section">
+      <div class="section-header">
+        <h2>About Me</h2>
+        <p class="subtitle">ICT student at Tshwane University of Technology — production-ready apps, clean architecture & UX.</p>
+      </div>
+
+      <div class="about-grid">
+        <div>
+          <p><strong>Senwelo Olebogeng</strong> — I create backend-first applications with Java and Spring Boot and build usable front-ends with modern JS and CSS.</p>
+          <p>I focus on testability, containerization, and deployable systems. Currently learning microservices and advanced cloud patterns on AWS.</p>
+
+          <div class="tech-stack">
+            <span class="tech">Java</span>
+            <span class="tech">Spring Boot</span>
+            <span class="tech">HTML/CSS</span>
+            <span class="tech">JavaScript</span>
+            <span class="tech">PostgreSQL</span>
+          </div>
+        </div>
+
+        <div aria-hidden="true">
+          <!-- optional illustration; use local file if you have one -->
+          <div style="width:100%;height:160px;border-radius:8px;background:linear-gradient(90deg,var(--accent),#4b86b4);display:grid;place-items:center;color:#fff">
+            Developer illustration
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="fade-section">
+      <div class="section-header">
+        <h2>Skills <small id="skillSourceBadge" class="skill-source">Manual</small></h2>
+        <p class="subtitle">Percentages start from a baseline and are adjusted by GitHub language data if available.</p>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-item">
+          <div class="skill-head"><span>HTML / CSS</span><span class="skill-percent">0%</span></div>
+          <div class="skill-bar"><div class="skill-progress" data-skill="html" data-value="90"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head"><span>JavaScript</span><span class="skill-percent">0%</span></div>
+          <div class="skill-bar"><div class="skill-progress" data-skill="javascript" data-value="75"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head"><span>React.js</span><span class="skill-percent">0%</span></div>
+          <div class="skill-bar"><div class="skill-progress" data-skill="react" data-value="70"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head"><span>Java</span><span class="skill-percent">0%</span></div>
+          <div class="skill-bar"><div class="skill-progress" data-skill="java" data-value="80"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head"><span>PostgreSQL</span><span class="skill-percent">0%</span></div>
+          <div class="skill-bar"><div class="skill-progress" data-skill="sql" data-value="60"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head"><span>Docker</span><span class="skill-percent">0%</span></div>
+          <div class="skill-bar"><div class="skill-progress" data-skill="docker" data-value="50"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head"><span>Git & GitHub</span><span class="skill-percent">0%</span></div>
+          <div class="skill-bar"><div class="skill-progress" data-skill="git" data-value="85"></div></div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-head"><span>AWS</span><span class="skill-percent">0%</span></div>
+          <div class="skill-bar"><div class="skill-progress" data-skill="aws" data-value="45"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="fade-section">
+      <div class="section-header">
+        <h2>Projects</h2>
+        <p class="subtitle">Latest public repositories from GitHub. Commits & contributors shown when available.</p>
+      </div>
+
+      <div id="projectGrid" class="projects-grid">
+        <div class="loading">Loading projects from GitHub...</div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="fade-section">
+      <div class="section-header">
+        <h2>Contact</h2>
+        <p class="subtitle">Open to internships, mentoring and collaboration.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <h4>Email</h4>
+            <a href="mailto:250513704@tut4life.ac.za">250513704@tut4life.ac.za</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">🔗</div>
+          <div>
+            <h4>LinkedIn</h4>
+            <a href="https://www.linkedin.com/in/olebogeng-senwelo-05b3bb367" target="_blank" rel="noopener noreferrer">linkedin.com/in/olebogeng-senwelo</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">🐙</div>
+          <div>
+            <h4>GitHub</h4>
+            <a href="https://github.com/Olebogeng360" target="_blank" rel="noopener noreferrer">github.com/Olebogeng360</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h4>Phone</h4>
+            <a href="tel:+27691092241">+27 69 109 2241</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section id="contact-form" class="fade-section">
+      <div class="section-header">
+        <h2>Send a Proposal</h2>
+        <p class="subtitle">Fill in the form below and it will go straight to my inbox.</p>
+      </div>
+
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="contact-box">
+        <label>
+          <span>Name</span>
+          <input type="text" name="name" required>
+        </label>
+
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" required>
+        </label>
+
+        <label>
+          <span>Proposal / Message</span>
+          <textarea name="message" rows="5" required></textarea>
+       </label>
+
+        <button type="submit" class="btn btn-primary">Send Proposal</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer>
+      <div class="footer-links">
+        <a href="https://github.com/Olebogeng360" target="_blank" rel="noopener noreferrer">GitHub</a> ·
+        <a href="https://www.linkedin.com/in/olebogeng-senwelo-05b3bb367" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+      </>
+      <div>&copy; <span id="year"></span> Senwelo Olebogeng</div>
+    </div>
+  </footer>
+
+  <!-- ---------- Script (inline) ---------- -->
+  <script>
+  (function(){
+    'use strict';
+    // small DOM helpers
+    const el = s => document.querySelector(s);
+    const elAll = s => Array.from(document.querySelectorAll(s));
+    const GITHUB_USERNAME = 'Olebogeng360';
+    const MAX_REPOS = 12;
+    const STATS_RETRY_MAX = 5;
+    const STATS_RETRY_BASE_MS = 1000;
+
+    // theme toggle (keeps class on <html> for early set)
+    const themeBtn = el('#themeToggle');
+    function setTheme(theme){
+      if(theme === 'dark') document.documentElement.classList.add('theme-dark');
+      else document.documentElement.classList.remove('theme-dark');
+      try { localStorage.setItem('senwelo_theme', theme); } catch(e){}
+      if(themeBtn) themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      if(themeBtn) themeBtn.setAttribute('aria-pressed', String(theme === 'dark'));
+    }
+    themeBtn && themeBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('theme-dark');
+      setTheme(isDark ? 'dark' : 'light');
+    });
+
+    // set year
+    el('#year') && (el('#year').textContent = new Date().getFullYear());
+
+    // reveal sections on scroll
+    const sections = elAll('.fade-section');
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(en => {
+        if(en.isIntersecting){
+          en.target.classList.add('visible');
+          o.unobserve(en.target);
+        }
+      });
+    }, {threshold: 0.12});
+    sections.forEach(s => obs.observe(s));
+
+    // ---------- Skill bars logic ----------
+    const skillProgressEls = elAll('.skill-progress');
+    const skillPercentEls = elAll('.skill-percent');
+    const skillSourceBadge = el('#skillSourceBadge');
+
+    const languageToSkill = {
+      'HTML': 'html','CSS':'html',
+      'JavaScript':'javascript','TypeScript':'javascript',
+      'Java':'java','SQL':'sql','PLpgSQL':'sql',
+      'Dockerfile':'docker','Shell':'git','Makefile':'git'
+    };
+    const BASELINE = { html:90,javascript:75,react:70,java:80,sql:60,docker:50,git:85,aws:45 };
+
+    function computeSkillPercentagesFromLangs(langTotals){
+      const totals = {...langTotals};
+      const totalBytes = Object.values(totals).reduce((a,b)=>a+b,0) || 0;
+      const result = {...BASELINE};
+      if(totalBytes === 0) return result;
+      const skillBytes = {};
+      Object.entries(totals).forEach(([lang,bytes])=>{
+        const mapped = languageToSkill[lang] || null;
+        if(mapped) skillBytes[mapped] = (skillBytes[mapped]||0)+bytes;
+        else {
+          const low = lang.toLowerCase();
+          if(low.includes('js')) skillBytes['javascript']=(skillBytes['javascript']||0)+bytes;
+          else if(low.includes('java')) skillBytes['java']=(skillBytes['java']||0)+bytes;
+        }
+      });
+      const knownBytesTotal = Object.values(skillBytes).reduce((a,b)=>a+b,0) || 0;
+      if(knownBytesTotal === 0) return result;
+      Object.keys(result).forEach(skill=>{
+        const rawShare = (skillBytes[skill]||0)/knownBytesTotal;
+        const derived = Math.round(rawShare*100);
+        const blended = Math.round(0.65*result[skill] + 0.35*derived);
+        result[skill] = Math.max(10, Math.min(95, blended));
+      });
+      return result;
+    }
+
+    function animateNumber(elNode, from, to, ms=1000){
+      const start = performance.now();
+      const ease = t => t*(2-t);
+      function step(now){
+        const t = Math.min((now - start)/ms,1);
+        const v = Math.round(from + (to-from)*ease(t));
+        elNode.textContent = v + '%';
+        if(t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function animateBar(barEl, percentEl, target){
+      barEl.style.width = target + '%';
+      const current = parseInt(percentEl.textContent) || 0;
+      animateNumber(percentEl, current, target, 1000);
+    }
+
+    async function updateAndAnimateSkills(langTotals = {}){
+      const computed = computeSkillPercentagesFromLangs(langTotals);
+      const isAuto = Object.keys(langTotals).length > 0;
+      if(skillSourceBadge) skillSourceBadge.textContent = isAuto ? 'Auto-derived (GitHub)' : 'Manual';
+      skillProgressEls.forEach((barEl, idx) => {
+        const key = barEl.dataset.skill;
+        const percentEl = skillPercentEls[idx];
+        const target = computed[key] ?? BASELINE[key] ?? 50;
+        setTimeout(()=> animateBar(barEl, percentEl, target), idx * 110);
+      });
+    }
+
+    // ---------- GitHub fetching ----------
+
+    // simple fetch wrapper
+    async function fetchJSON(url){
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      return res.json();
+    }
+
+    // stats contributors with backoff
+    async function fetchRepoStatsWithBackoff(owner, repoName){
+      const url = `https://api.github.com/repos/${owner}/${repoName}/stats/contributors`;
+      for(let attempt=1; attempt<=STATS_RETRY_MAX; attempt++){
+        try {
+          const res = await fetch(url);
+          if(res.status === 200){
+            const arr = await res.json();
+            if(!Array.isArray(arr)) return null;
+            const commits = arr.reduce((s,c)=>s+(c.total||0),0);
+            return {commits, contributors: arr.length};
+          } else if(res.status === 202){
+            // wait exponential backoff
+            const wait = STATS_RETRY_BASE_MS * Math.pow(2, attempt-1);
+            await new Promise(r=>setTimeout(r, wait));
+            continue;
+          } else {
+            return null;
+          }
+        } catch(e){
+          return null;
+        }
+      }
+      return null;
+    }
+
+    async function fetchRepoContributorsFallback(repo){
+      try {
+        const url = repo.contributors_url + '?per_page=100';
+        const res = await fetch(url);
+        if(!res.ok) return {commits:0,contributors:0};
+        const arr = await res.json();
+        if(!Array.isArray(arr)) return {commits:0,contributors:0};
+        const commits = arr.reduce((s,c)=>s+(c.contributions||0),0);
+        return {commits, contributors: arr.length};
+      } catch(e){
+        return {commits:0,contributors:0};
+      }
+    }
+
+    async function fetchRepoLanguages(repo){
+      try {
+        const res = await fetch(repo.languages_url);
+        if(!res.ok) return {};
+        return res.json();
+      } catch(e){ return {}; }
+    }
+
+    async function loadProjects(){
+      const projectGrid = el('#projectGrid');
+      if(!projectGrid) return;
+      projectGrid.innerHTML = '<div class="loading">Loading projects from GitHub...</div>';
+      try {
+        const repos = await fetchJSON(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`);
+        if(!repos || repos.length === 0){
+          projectGrid.innerHTML = '<div class="loading">No public repositories found.</div>';
+          return {};
+        }
+        const selected = repos.slice(0, MAX_REPOS);
+
+        // languages in parallel
+        const langPromises = selected.map(r => fetchRepoLanguages(r));
+        const langResults = await Promise.all(langPromises);
+
+        // contributors/stats sequentially (to reduce bursts)
+        const contribResults = [];
+        for(const r of selected){
+          let stats = await fetchRepoStatsWithBackoff(r.owner.login, r.name);
+          if(!stats) stats = await fetchRepoContributorsFallback(r);
+          contribResults.push(stats || {commits:0, contributors:0});
+        }
+
+        // accumulate languages
+        const langTotals = {};
+        langResults.forEach(obj => {
+          Object.entries(obj).forEach(([l,bytes]) => {
+            langTotals[l] = (langTotals[l] || 0) + bytes;
+          });
+        });
+
+        // render cards
+        projectGrid.innerHTML = '';
+        const sorted = selected.sort((a,b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+        sorted.forEach((repo, idx) => {
+          const contrib = contribResults[idx] || {commits:0,contributors:0};
+          const card = document.createElement('article');
+          card.className = 'project-card';
+          const desc = repo.description ? repo.description : 'No description provided.';
+          const language = repo.language || '—';
+          card.innerHTML = `
+            <h3>${repo.name}</h3>
+            <p>${escapeHtml(desc)}</p>
+            <div class="project-meta">
+              <span>⭐ ${repo.stargazers_count}</span>
+              <span>${escapeHtml(language)}</span>
+              <span>Updated: ${new Date(repo.pushed_at).toLocaleDateString()}</span>
+            </div>
+            <div class="project-meta" style="margin-top:8px">
+              <span>Commits: ${contrib.commits}</span>
+              <span>Contributors: ${contrib.contributors}</span>
+            </div>
+            <div style="margin-top:10px">
+              <a class="btn btn-outline" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repo</a>
+            </div>
+          `;
+          projectGrid.appendChild(card);
+        });
+
+        return { langTotals };
+      } catch(err){
+        console.error(err);
+        projectGrid.innerHTML = `<div class="loading">Failed to load GitHub: ${escapeHtml(err.message||String(err))}</div>`;
+        return { langTotals: {} };
+      }
+    }
+
+    function escapeHtml(s=''){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    // ---------- Kickoff ----------
+    (async function init(){
+      try {
+        // initial baseline skill animation (fast)
+        updateAndAnimateSkills({});
+        // load projects + languages + contributors
+        const { langTotals } = await loadProjects();
+        if(langTotals && Object.keys(langTotals).length > 0){
+          // update skills blended with GitHub data
+          updateAndAnimateSkills(langTotals);
+        }
+      } catch(e){
+        console.error('Init error', e);
+      }
+    })();
+
+  })();
+  </script>
+</body>
+</html>
